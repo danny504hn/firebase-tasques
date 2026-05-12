@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "421143060020",
+    "project_id": "fir-2-b57e3",
+    "storage_bucket": "fir-2-b57e3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421143060020:android:2e7a098b1b83ec05417461",
+        "android_client_info": {
+          "package_name": "cat.institutmontilivi.tasquesfirebase25"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "421143060020-4rbtrkhdfnsbv0v1n4shrutsubv9tsf3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cat.institutmontilivi.tasquesfirebase25",
+            "certificate_hash": "d5895f18ab1d318140065cf9eba9249a72dac115"
+          }
+        },
+        {
+          "client_id": "421143060020-t694rkesgaipjvpi31i3mi4mi69eghpn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7wf1mWFZSTFJhbA6QsI-4ZA-1sgwjdiI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "421143060020-t694rkesgaipjvpi31i3mi4mi69eghpn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

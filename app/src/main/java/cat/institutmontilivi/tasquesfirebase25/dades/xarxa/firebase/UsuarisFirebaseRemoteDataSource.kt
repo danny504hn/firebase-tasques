@@ -33,7 +33,26 @@ class UsuarisFirebaseRemoteDataSource ( manegadorFirestore: ManegadorFirestore):
     }
 
     override suspend  fun afegeixUsuari(usuari: Usuari): Resposta<Boolean> {
-        TODO("Not yet implemented")
+        try {
+            val resposta = existeixUsuari(usuari.correu)
+            if(resposta is Resposta.Fracas)
+                throw Exception(resposta.missatgeError)
+
+            val jaExistia = (resposta as Resposta.Exit).dades
+            if(!jaExistia){
+                val refUsuaris = db.firestoreDb.collection(db.USUARIS)
+                val refUsuariNou = refUsuaris.document()
+                val usuariNou = usuari.copy(id = refUsuariNou.id)
+                refUsuariNou.set(usuariNou).await()
+                return Resposta.Exit(true)
+            }
+            else{
+                return Resposta.Exit(dades = false)
+            }
+
+        } catch (e : Exception){
+            return Resposta.Fracas(e.message ?: "Error en afegir l'usuari")
+        }
     }
 
     override suspend  fun eliminaUsuari(id: Usuari): Resposta<Boolean> {
@@ -49,7 +68,14 @@ class UsuarisFirebaseRemoteDataSource ( manegadorFirestore: ManegadorFirestore):
     }
 
     override suspend fun existeixUsuari(correu: String): Resposta<Boolean> {
-        TODO("Not yet implemented")
+        try{
+            val documents = db.firestoreDb.collection(db.USUARIS)
+                .whereEqualTo("correu",correu)
+                .get().await()
+            return Resposta.Exit(!documents.isEmpty)
+        }catch (e : Exception){
+            return Resposta.Fracas(e.message ?: "Error en consultar l'existencia de l'usuari")
+        }
     }
 
     override suspend fun eliminaTascaDeUsuari(idTasca: String, idUsuari: String): Resposta<Boolean> {

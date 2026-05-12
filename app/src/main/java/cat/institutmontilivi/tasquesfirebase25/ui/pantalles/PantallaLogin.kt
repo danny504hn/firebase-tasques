@@ -143,6 +143,19 @@ fun PantallaLogin(
                     )
                     error = resultat.first
                     missatgeError = resultat.second
+                    if(resultat.first == false){
+                         BBDDFactory.obtenRepositoriUsuaris(context, BBDDFactory.DatabaseType.FIREBASE)
+                             .afegeixUsuari(Usuari(
+                                 id ="",
+                                 nom = "",
+                                 cognom = "",
+                                 correu = correu,
+                                 tasques = listOf(),
+                                 usuarisHabituals = listOf()
+                             )
+
+                             )
+                    }
                 }
             },
             shape = RoundedCornerShape(50.dp),
