@@ -5,7 +5,8 @@ import cat.institutmontilivi.tasquesfirebase25.dades.xarxa.manegadors.firestore.
 import cat.institutmontilivi.tasquesfirebase25.model.app.Resposta
 import cat.institutmontilivi.tasquesfirebase25.model.app.Tasca
 import cat.institutmontilivi.tasquesfirebase25.model.app.Usuari
-import kotlinx.coroutines.runBlocking
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
 
 
@@ -55,16 +56,43 @@ class UsuarisFirebaseRemoteDataSource ( manegadorFirestore: ManegadorFirestore):
         }
     }
 
-    override suspend  fun eliminaUsuari(id: Usuari): Resposta<Boolean> {
-        TODO("Not yet implemented")
+    override suspend fun eliminaUsuari(id: Usuari): Resposta<Boolean> {
+        try {
+            val refUsuaris = db.firestoreDb.collection(db.USUARIS)
+            val refUsuari = refUsuaris.document(id.id)
+            refUsuari.delete().await()
+        } catch (e: Exception) {
+            return Resposta.Fracas(e.message ?: "Ha fallat en eliminar l'usuari")
+        }
+        return Resposta.Exit(true)
     }
 
-    override suspend  fun modificaUsuari(usuari: Usuari): Resposta<Boolean> {
-        TODO("Not yet implemented")
+    override suspend fun modificaUsuari(usuari: Usuari): Resposta<Boolean> {
+        var actualitzat = false
+        try {
+            val refUsuaris = db.firestoreDb.collection(db.USUARIS)
+            val refUsuari = refUsuaris.document(usuari.id)
+            refUsuari.set(usuari).await()
+            actualitzat = true
+        } catch (e: Exception) {
+            return Resposta.Fracas(e.message ?: "Ha fallat en modificar l'usuari")
+        }
+        return Resposta.Exit(actualitzat)
     }
 
-    override suspend  fun obtenTasquesUsuari(id: String): Resposta<List<Tasca>> {
-        TODO("Not yet implemented")
+    override suspend fun obtenTasquesUsuari(id: String): Resposta<List<Tasca>> {
+        try {
+            val refUsuaris = db.firestoreDb.collection(db.USUARIS)
+            val doc = refUsuaris.document(id).get().await()
+            val usuari = doc.toObject<Usuari>() ?: return Resposta.Fracas("No s'ha trobat l'usuari")
+            val tasques = usuari.tasques.mapNotNull { idTasca ->
+                val refTasca = db.firestoreDb.collection(db.TASQUES).document(idTasca)
+                refTasca.get().await().toObject(Tasca::class.java)
+            }
+            return Resposta.Exit(tasques)
+        } catch (e: Exception) {
+            return Resposta.Fracas(e.message ?: "Ha fallat en obtenir les tasques de l'usuari")
+        }
     }
 
     override suspend fun existeixUsuari(correu: String): Resposta<Boolean> {
@@ -79,10 +107,22 @@ class UsuarisFirebaseRemoteDataSource ( manegadorFirestore: ManegadorFirestore):
     }
 
     override suspend fun eliminaTascaDeUsuari(idTasca: String, idUsuari: String): Resposta<Boolean> {
-        TODO("Not yet implemented")
+        try {
+            val refUsuari = db.firestoreDb.collection(db.USUARIS).document(idUsuari)
+            refUsuari.update("tasques", FieldValue.arrayRemove(idTasca)).await()
+        } catch (e: Exception) {
+            return Resposta.Fracas(e.message ?: "Ha fallat en eliminar la tasca de l'usuari")
+        }
+        return Resposta.Exit(true)
     }
 
     override suspend fun afegeixTascaAUsuari(idTasca: String, idUsuari: String): Resposta<Boolean> {
-        TODO("Not yet implemented")
+        try {
+            val refUsuari = db.firestoreDb.collection(db.USUARIS).document(idUsuari)
+            refUsuari.update("tasques", FieldValue.arrayUnion(idTasca)).await()
+        } catch (e: Exception) {
+            return Resposta.Fracas(e.message ?: "Ha fallat en afegir la tasca a l'usuari")
+        }
+        return Resposta.Exit(true)
     }
 }

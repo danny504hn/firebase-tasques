@@ -76,6 +76,7 @@ fun PantallaEstats(viewModel: ViewModelEstats = viewModel())
         mostraDialegActualitzaEstat = false
     }
 
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
@@ -97,6 +98,12 @@ fun PantallaEstats(viewModel: ViewModelEstats = viewModel())
             items(estat.value.estats)
             {
                 ElementEstat(it, eliminaEstat, editaEstat)
+                Button(onClick = { viewModel.generaEstatsFake() }) {
+                    Text("Genera estats")
+                }
+                Button(onClick = { viewModel.generaDadesFake() }) {
+                    Text("Dades Fake")
+                }
             }
         }
 

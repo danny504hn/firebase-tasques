@@ -7,6 +7,7 @@ class ManegadorFirestore {
     public val USUARIS = "Usuaris"
     public val ESTATS = "Estats"
     public val TASQUES = "Tasques"
-
+    val CATEGORIES = "categories"
+    val PRODUCTES = "productes"
     public val firestoreDb = FirebaseFirestore.getInstance()
 }

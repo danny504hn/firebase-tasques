@@ -1,12 +1,9 @@
 package cat.institutmontilivi.tasquesfirebase25.model.app
 
-data class Categoria (
-    val id:String,
-    val nom:String,
-    val colorFons:String,
-    val colorText:String,
-    val usuaris:List<String>,
-    val tasques:List<String>,
+data class Categoria(
+    val id: String = "",
+    val nom: String = "",
+    val llistaIdsProductes: List<String> = emptyList()
 )
 
 /*

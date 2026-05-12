@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "421143060020-q33aidcj7gfqpp9uvnr1lrgtpp38a46h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cat.institutmontilivi.tasquesfirebase25",
+            "certificate_hash": "703e3c4fc8c228f3c505ae93b393305d48191ee7"
+          }
+        },
+        {
           "client_id": "421143060020-t694rkesgaipjvpi31i3mi4mi69eghpn.apps.googleusercontent.com",
           "client_type": 3
         }
